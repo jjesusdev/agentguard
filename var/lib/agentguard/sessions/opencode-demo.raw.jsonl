@@ -1,0 +1,2 @@
+{"session_id": "opencode-demo", "seq": 1, "ts": "2026-10-27T19:37:56.389514+00:00", "type": "tool.call", "tool_name": "Bash", "args_digest": "abc"}
+{"session_id": "opencode-demo", "seq": 2, "ts": "2026-10-27T19:37:56.389870+00:00", "type": "tool.call", "tool_name": "Write", "path": "/tmp/test.txt", "args_digest": "def"}

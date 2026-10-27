@@ -1,0 +1,13 @@
+- id: secret-read
+  match:
+    path_contains: ".env"
+  action: alert
+- id: destructive-bash
+  match:
+    tool_name: "Bash"
+    args_contains: "rm -rf"
+  action: block
+- id: ssh-access
+  match:
+    path_contains: ".ssh"
+  action: alert

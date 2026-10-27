@@ -1,5 +1,7 @@
 # AgentGuard — Auditoría forense para agentes en YOLO mode
 
+[![CI](https://github.com/usuario/agentguard/actions/workflows/ci.yml/badge.svg)](https://github.com/usuario/agentguard/actions/workflows/ci.yml)
+
 **Daemon Linux de auditoría forense inmutable para sesiones de Claude Code / Cursor / OpenCode / Codex en YOLO mode.**
 
 > Proyecto de portafolio DevOps/SRE. Fecha inicio: 27 octubre 2026.

@@ -21,12 +21,18 @@ def get_adapter(name: str):
     return adapters[name]
 
 @app.command()
-def run(session_id: str, agent: str = "opencode"):
+def run(
+    session: str = typer.Option(..., "--session", help="ID de sesión"),
+    agent: str = typer.Option("opencode", "--agent", help="Agente a auditar")
+):
     import asyncio
+    # Validate agent choice
+    if agent not in {"opencode", "claude", "codex"}:
+        raise typer.BadParameter(f"Agente no soportado: {agent}")
     adapter = get_adapter(agent)
-    engine = Engine(adapter, session_id)
+    engine = Engine(adapter, session)
     asyncio.run(engine.run())
-    typer.echo(f"Session {session_id} procesada con {agent}")
+    typer.echo(f"Session {session} procesada con {agent}")
 
 @app.command()
 def verify(session_id: str):
@@ -38,10 +44,27 @@ def verify(session_id: str):
         typer.echo(f"TAMPERED at seq {bad}")
 
 @app.command()
-def report(session_id: str, output: Path = Path("report.html")):
+def report(
+    session_id: str = typer.Argument(..., help="ID de sesión"),
+    output: Path = typer.Option(..., "--output", help="Ruta de salida HTML")
+):
     from agentguard.config import settings
     generate_report(session_id, Path(settings.journal_dir), output)
     typer.echo(f"Report generado en {output}")
+
+@app.command(name="list")
+def list_sessions():
+    from agentguard.config import settings
+    journal_dir = Path(settings.journal_dir)
+    if not journal_dir.exists():
+        typer.echo("No sessions found")
+        return
+    sessions = sorted([p.stem for p in journal_dir.glob("*.jsonl")])
+    if not sessions:
+        typer.echo("No sessions found")
+        return
+    for s in sessions:
+        typer.echo(s)
 
 if __name__ == "__main__":
     app()

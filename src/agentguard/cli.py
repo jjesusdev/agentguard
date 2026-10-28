@@ -66,5 +66,22 @@ def list_sessions():
     for s in sessions:
         typer.echo(s)
 
+@app.command()
+def install_hooks(agent: str = typer.Argument(..., help="claude|opencode|codex")):
+    from pathlib import Path
+    agents = {
+        "claude": Path.home() / ".claude" / "agentguard",
+        "opencode": Path.home() / ".opencode" / "agentguard",
+        "codex": Path.home() / ".codex" / "agentguard",
+    }
+    if agent not in agents:
+        raise typer.BadParameter(f"Agente no soportado: {agent}")
+    p = agents[agent]
+    p.mkdir(parents=True, exist_ok=True)
+    typer.echo(f"Created {p}")
+    typer.echo(f"Hook output path: {p}/{{session_id}}.jsonl")
+    typer.echo("Configure your agent to write PostToolUse events as JSONL to this path.")
+    typer.echo("See docs/INSTALL-HOOKS.md for detailed config.")
+
 if __name__ == "__main__":
     app()

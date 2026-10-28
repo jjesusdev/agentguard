@@ -1,5 +1,5 @@
 from pydantic_settings import BaseSettings
-from pydantic import Field
+from pydantic import Field, ConfigDict
 
 class Settings(BaseSettings):
     journal_dir: str = Field(default="/var/lib/agentguard/sessions")
@@ -7,8 +7,6 @@ class Settings(BaseSettings):
     rules_dir: str = Field(default="/etc/agentguard/rules")
     sandbox_user: str = Field(default="agentguard")
 
-    class Config:
-        env_prefix = "AGENTGUARD_"
-        env_file = ".env"
+    model_config = ConfigDict(env_prefix="AGENTGUARD_", env_file=".env")
 
 settings = Settings()

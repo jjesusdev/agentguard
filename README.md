@@ -96,9 +96,10 @@ python generate_report.py
 ## Demo rápido
 
 ```bash
-agentguard start --session claude-01
-agentguard replay --session claude-01
-agentguard report --session claude-01 --output incident.html
+agentguard install-hooks --agent claude
+agentguard run --session claude-01 --agent claude
+agentguard verify claude-01
+agentguard report claude-01 --output incident.html
 ```
 
 ## Licencia

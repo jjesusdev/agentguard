@@ -31,7 +31,18 @@ class Detector:
         if not path.exists():
             return []
         data = yaml.safe_load(path.read_text()) or []
-        return [Rule(r["id"], r["match"], r["action"]) for r in data]
+        if not isinstance(data, list):
+            raise ValueError("rules file must contain a list")
+        rules = []
+        for i, r in enumerate(data):
+            if not isinstance(r, dict):
+                raise ValueError(f"rule #{i} must be a dict")
+            if "id" not in r or "match" not in r or "action" not in r:
+                raise ValueError(f"rule #{i} missing required fields id/match/action")
+            if not isinstance(r["match"], dict):
+                raise ValueError(f"rule #{i} match must be dict")
+            rules.append(Rule(r["id"], r["match"], r["action"]))
+        return rules
 
     def check(self, event: AgentEvent) -> List[Dict[str, Any]]:
         hits = []

@@ -66,6 +66,13 @@ uv run pytest
 
 ## Uso rápido
 
+Instalar hooks de agente:
+```bash
+python scripts/install_hooks.py claude
+python scripts/install_hooks.py opencode
+python scripts/install_hooks.py codex
+```
+
 Generar datos de prueba:
 ```bash
 python generate_sample.py
